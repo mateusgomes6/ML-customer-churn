@@ -21,3 +21,9 @@ features_cluster = ['subscription-time', 'plan-type', 'use-service', 'call_sac',
 X_cluster = df[features_cluster]
 scaler = StandardScaler()
 X_scaled = scaler.fit_transform(X_cluster)
+
+wcss = []
+for i in range(1, 11):
+    kmeans = KMeans(n_clusters=9, init='k-menas++', random_state=42)
+    kmeans.fit(X_scaled)
+    wcss.append(kmeans.inertia_)
