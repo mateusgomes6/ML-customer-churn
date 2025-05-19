@@ -12,13 +12,17 @@ from sklearn.decomposition import PCA
 
 from dataframe import df
 
+df = pd.get_dummies(df, columns=['plan-type'], drop_first=True)
+df['churn'] = df['churn'].map({'yes': 1, 'no': 0})
+
 plt.figure(figsize=(10, 6))
-sns.boxplot(x='churn', y='call_sac', data=df)
+sns.countplot(x='churn', hue='call_sac', data=df)
 plt.title('Relationship between Call SAC and Churn')
 plt.show()
 
 # Clustering for customer segmentation
-features = ['subscription-time', 'plan-type', 'use-service', 'call_sac', 'client-satisfaction', 'complaints']
+features = ['subscription-time', 'use-service', 'call_sac', 'client-satisfaction', 'complaints'] + \
+           [col for col in df.columns if 'plan-type_' in col]
 X_cluster = df[features]
 scaler = StandardScaler()
 X_scaled = scaler.fit_transform(X_cluster)
@@ -58,6 +62,11 @@ X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_
 
 rf = RandomForestClassifier(n_estimators=100, random_state=42)
 rf.fit(X_train, y_train)
+
+plt.figure(figsize=(10, 6))
+sns.heatmap(df.corr(), annot=True, cmap='coolwarm')
+plt.title('Matriz de Correlação')
+plt.show()
 
 # Evaluating the model
 y_pred = rf.predict(X_test)
