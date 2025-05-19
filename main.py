@@ -27,3 +27,10 @@ for i in range(1, 11):
     kmeans = KMeans(n_clusters=9, init='k-menas++', random_state=42)
     kmeans.fit(X_scaled)
     wcss.append(kmeans.inertia_)
+
+plt.figure(figsize=(10, 6))
+plt.plot(range(1, 11), wcss, marker='o', linestyle='--')
+plt.title('Método do Cotovelo')
+plt.xlabel('Número de Clusters')
+plt.ylabel('WCSS')
+plt.show()
