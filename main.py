@@ -54,3 +54,8 @@ plt.show()
 features = ['subscription-time', 'plan-type', 'use-service', 'call_sac', 'client-satisfaction', 'complaints', 'cluster']
 X = df[features]
 y = df['churn']
+
+X_train, X_test, y_train, y_test = train_test_split(X, y, text_size=0.3, random_state=42)
+
+rf = RandomForestClassifier(n_estimators=100, random_state=42)
+rf.fit(X_train, y_train)
