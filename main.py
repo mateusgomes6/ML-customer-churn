@@ -17,6 +17,7 @@ sns.boxplot(x='churn', y='call_sac', data=df)
 plt.title('Relação entre Churn e Ligações para o SAC')
 plt.show()
 
+# Clustering for customer segmentation
 features_cluster = ['subscription-time', 'plan-type', 'use-service', 'call_sac', 'client-satisfaction', 'complaints']
 X_cluster = df[features_cluster]
 scaler = StandardScaler()
@@ -30,8 +31,8 @@ for i in range(1, 11):
 
 plt.figure(figsize=(10, 6))
 plt.plot(range(1, 11), wcss, marker='o', linestyle='--')
-plt.title('Método do Cotovelo')
-plt.xlabel('Número de Clusters')
+plt.title('Elbow Method')
+plt.xlabel('Clusters Number')
 plt.ylabel('WCSS')
 plt.show()
 
@@ -41,3 +42,15 @@ df['cluster'] = clusters
 
 pca = PCA(n_components=2)
 X_pca = pca.fit_transform(X_scaled)
+
+plt.figure(figsize=(10, 6))
+sns.scatterplot(x=X_pca[:, 0], y=X_pca[:, 1], hue=clusters, palette='viridis', s=100)
+plt.title('Visualização dos Clusters de Clientes')
+plt.xlabel('Componente PCA 1')
+plt.ylabel('Componente PCA 2')
+plt.show()
+
+# Pre-processing for classification model
+features = ['subscription-time', 'plan-type', 'use-service', 'call_sac', 'client-satisfaction', 'complaints', 'cluster']
+X = df[features]
+y = df['churn']
