@@ -24,4 +24,3 @@ data = {
 }
 
 df = pd.DataFrame(data)
-df['subscription-time'] = df['subscription-time'].apply(lambda x: f"{x} months" if x > 1 else f"{x} month")

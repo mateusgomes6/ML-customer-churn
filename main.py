@@ -14,7 +14,7 @@ from dataframe import df
 
 plt.figure(figsize=(10, 6))
 sns.boxplot(x='churn', y='call_sac', data=df)
-plt.title('Relação entre Churn e Ligações para o SAC')
+plt.title('Relationship between Call SAC and Churn')
 plt.show()
 
 # Clustering for customer segmentation
@@ -25,7 +25,7 @@ X_scaled = scaler.fit_transform(X_cluster)
 
 wcss = []
 for i in range(1, 11):
-    kmeans = KMeans(n_clusters=i, init='k-menas++', random_state=42)
+    kmeans = KMeans(n_clusters=i, init='k-means++', random_state=42)
     kmeans.fit(X_scaled)
     wcss.append(kmeans.inertia_)
 
@@ -45,7 +45,7 @@ X_pca = pca.fit_transform(X_scaled)
 
 plt.figure(figsize=(10, 6))
 sns.scatterplot(x=X_pca[:, 0], y=X_pca[:, 1], hue=clusters, palette='viridis', s=100)
-plt.title('Visualização dos Clusters de Clientes')
+plt.title('Visualization of Clusters using PCA')
 plt.xlabel('Componente PCA 1')
 plt.ylabel('Componente PCA 2')
 plt.show()
@@ -82,6 +82,6 @@ print(feature_importance)
 
 plt.figure(figsize=(10, 6))
 sns.barplot(x='Importance', y='Feature', data=feature_importance)
-plt.title('Importância das Features no Modelo Random Forest')
+plt.title('Feature Importance in Random Forest')
 plt.show()
 
