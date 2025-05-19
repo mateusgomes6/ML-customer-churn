@@ -24,7 +24,7 @@ X_scaled = scaler.fit_transform(X_cluster)
 
 wcss = []
 for i in range(1, 11):
-    kmeans = KMeans(n_clusters=9, init='k-menas++', random_state=42)
+    kmeans = KMeans(n_clusters=i, init='k-menas++', random_state=42)
     kmeans.fit(X_scaled)
     wcss.append(kmeans.inertia_)
 
@@ -34,3 +34,10 @@ plt.title('Método do Cotovelo')
 plt.xlabel('Número de Clusters')
 plt.ylabel('WCSS')
 plt.show()
+
+kmeans = KMeans(n_clusters=3, init='k-means++', random_state=42)
+clusters = kmeans.fit_predict(X_scaled)
+df['cluster'] = clusters
+
+pca = PCA(n_components=2)
+X_pca = pca.fit_transform(X_scaled)
