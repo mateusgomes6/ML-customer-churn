@@ -59,3 +59,13 @@ X_train, X_test, y_train, y_test = train_test_split(X, y, text_size=0.3, random_
 
 rf = RandomForestClassifier(n_estimators=100, random_state=42)
 rf.fit(X_train, y_train)
+
+y_pred = rf.predict(X_test)
+
+print("\nRelatório de Classificação:")
+print(classification_report(y_test, y_pred))
+
+print("\nMatriz de Confusão:")
+print(confusion_matrix(y_test, y_pred))
+
+print("\nAcurácia:", accuracy_score(y_test, y_pred))
