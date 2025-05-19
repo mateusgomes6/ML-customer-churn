@@ -11,3 +11,8 @@ from sklearn.metrics import classification_report, confusion_matrix, accuracy_sc
 from sklearn.decomposition import PCA
 
 from dataframe import df
+
+plt.figure(figsize=(10, 6))
+sns.boxplot(x='churn', y='call_sac', data=df)
+plt.title('Relação entre Churn e Ligações para o SAC')
+plt.show()
