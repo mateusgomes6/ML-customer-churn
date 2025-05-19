@@ -60,12 +60,28 @@ X_train, X_test, y_train, y_test = train_test_split(X, y, text_size=0.3, random_
 rf = RandomForestClassifier(n_estimators=100, random_state=42)
 rf.fit(X_train, y_train)
 
+# Evaluating the model
 y_pred = rf.predict(X_test)
 
-print("\nRelatório de Classificação:")
+print("\nClassification Report:")
 print(classification_report(y_test, y_pred))
 
-print("\nMatriz de Confusão:")
+print("\nConfusion Matrix:")
 print(confusion_matrix(y_test, y_pred))
 
-print("\nAcurácia:", accuracy_score(y_test, y_pred))
+print("\nAccuracy:", accuracy_score(y_test, y_pred))
+
+# Feature importance
+feature_importance = pd.DataFrame({
+    'Feature': features,
+    'Importance': rf.feature_importances_
+}).sort_values('Importance', ascending=False)
+
+print("\nFeature importance:")
+print(feature_importance)
+
+plt.figure(figsize=(10, 6))
+sns.barplot(x='Importance', y='Feature', data=feature_importance)
+plt.title('Importância das Features no Modelo Random Forest')
+plt.show()
+
