@@ -111,3 +111,57 @@ plt.figure(figsize=(12, 8))
 sns.heatmap(df.corr(), annot=True, cmap='coolwarm', fmt='.2f')
 plt.title('Correlation Matrix')
 plt.show()
+
+# Prediction function
+def predict_churn(sample_data):
+    sample_data = sample_data.copy()
+    sample_data = pd.get_dummies(sample_data, columns=['plan-type'], drop_first=True)
+    required_cols = ['subscription-time', 'use-service', 'call_sac', 
+                    'client-satisfaction', 'complaints']
+    plan_type_cols = [col for col in df.columns if 'plan-type_' in col]
+    
+    for col in plan_type_cols:
+        if col not in sample_data.columns:
+            sample_data[col] = 0
+    
+    # Select and order columns exactly as in training
+    feature_cols = required_cols + plan_type_cols
+    sample_data = sample_data[feature_cols]
+    
+    sample_data = sample_data.fillna(df[feature_cols].mean())
+    
+    # Scale features
+    sample_scaled = scaler.transform(sample_data)
+    
+    # Predict cluster
+    clusters = kmeans.predict(sample_scaled)
+    sample_with_cluster = np.hstack([sample_scaled, clusters.reshape(-1, 1)])
+    
+    # Predict probabilities and classes
+    try:
+        probabilities = rf.predict_proba(sample_with_cluster)[:, 1]
+        predictions = rf.predict(sample_with_cluster)
+    except IndexError:
+        # Fallback if model only predicts one class
+        predictions = rf.predict(sample_with_cluster)
+        probabilities = np.where(predictions == 1, 0.99, 0.01)
+    
+    return probabilities, predictions
+
+sample_data = pd.DataFrame({
+    'subscription-time': [12, 24, 6],
+    'use-service': [200, 150, 300],
+    'call_sac': [2, 0, 5],
+    'client-satisfaction': [3, 4, 2],
+    'complaints': [1, 0, 3],
+    'plan-type': ['premium', 'basic', 'basic']
+})
+
+probabilities, predictions = predict_churn(sample_data)
+
+sample_data['churn_probability'] = probabilities
+sample_data['churn_prediction'] = predictions
+sample_data['churn_prediction'] = sample_data['churn_prediction'].map({1: 'yes', 0: 'no'})
+
+print("\nPrevisões de Churn para Dados de Exemplo:")
+print(sample_data[['subscription-time', 'use-service', 'churn_probability', 'churn_prediction']])
