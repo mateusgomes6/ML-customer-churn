@@ -54,6 +54,7 @@ This end-to-end machine learning project predicts customer churn (attrition) usi
     └───integration
             test_pipeline.py
 ```
+<a id="-installation"></a>
 ## 🛠️ Installation
 
 ### Pre requisites
