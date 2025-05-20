@@ -23,4 +23,4 @@ data = {
     # 0 = no churn, 1 = churn
 }
 
-df = pd.DataFrame(data)
+Data = pd.DataFrame(data)

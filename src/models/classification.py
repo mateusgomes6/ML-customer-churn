@@ -5,18 +5,18 @@ from sklearn.ensemble import RandomForestClassifier
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import classification_report, confusion_matrix, accuracy_score
 
-def train_random_forest(X, y):
+def train_random_forest(X, y, test_size=0.3, random_state=42):
     """
-    Train a Random Forest Classifier.
-    1. Split the data into training and testing sets
-    2. Train the model
-    3. Evaluate the model
+    Train a RandomForest model
+    Returns the trained model and test data
     """
-    X_train, X_test, y_train, y_test = RandomForestClassifier(X, y, test_size=0.3, random_state=42, stratify=y)
-
-    rf = RandomForestClassifier(n_estimators=100, random_state=42)
+    X_train, X_test, y_train, y_test = train_test_split(
+        X, y, test_size=test_size, random_state=random_state, stratify=y
+    )
+    
+    rf = RandomForestClassifier(n_estimators=100, random_state=random_state)
     rf.fit(X_train, y_train)
-
+    
     return rf, X_test, y_test
 
 def evaluate_model(model, X_test, y_test):
